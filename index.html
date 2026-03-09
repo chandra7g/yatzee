@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yahtzee!</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Setup Modal -->
+  <div id="setup-modal" class="modal">
+    <div class="modal-content setup-content">
+      <h1>🎲 Yahtzee!</h1>
+      <div class="setup-form">
+        <label for="player-count">Number of Players (1–6):</label>
+        <input type="number" id="player-count" min="1" max="6" value="1">
+        <div id="player-names-container"></div>
+        <button id="start-game-btn" class="btn btn-primary">Start Game</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div id="gameover-modal" class="modal hidden">
+    <div class="modal-content gameover-content">
+      <h1>🏆 Game Over!</h1>
+      <div id="final-scores"></div>
+      <button id="play-again-btn" class="btn btn-primary">Play Again</button>
+    </div>
+  </div>
+
+  <!-- Main Game Area -->
+  <div id="game-area" class="hidden">
+    <!-- Player Info Bar -->
+    <header id="player-info-bar">
+      <div id="current-player-info">
+        <span id="current-player-name"></span>
+        <span id="turn-info"></span>
+      </div>
+      <div id="standings-bar"></div>
+    </header>
+
+    <!-- Dice Section -->
+    <section id="dice-section">
+      <div id="dice-container">
+        <div class="die-wrapper" data-index="0">
+          <div class="die" data-index="0"><div class="die-face"></div></div>
+          <span class="hold-label">HOLD</span>
+        </div>
+        <div class="die-wrapper" data-index="1">
+          <div class="die" data-index="1"><div class="die-face"></div></div>
+          <span class="hold-label">HOLD</span>
+        </div>
+        <div class="die-wrapper" data-index="2">
+          <div class="die" data-index="2"><div class="die-face"></div></div>
+          <span class="hold-label">HOLD</span>
+        </div>
+        <div class="die-wrapper" data-index="3">
+          <div class="die" data-index="3"><div class="die-face"></div></div>
+          <span class="hold-label">HOLD</span>
+        </div>
+        <div class="die-wrapper" data-index="4">
+          <div class="die" data-index="4"><div class="die-face"></div></div>
+          <span class="hold-label">HOLD</span>
+        </div>
+      </div>
+      <div id="roll-area">
+        <button id="roll-btn" class="btn btn-roll">Roll Dice</button>
+        <span id="rolls-left"></span>
+      </div>
+    </section>
+
+    <!-- Scorecard Section -->
+    <section id="scorecard-section">
+      <table id="scorecard-table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th class="col-potential">Potential</th>
+            <th class="col-score">Score</th>
+          </tr>
+        </thead>
+        <tbody id="upper-section">
+          <tr class="section-header"><td colspan="3">Upper Section</td></tr>
+          <tr data-category="ones"><td>Ones</td><td class="potential"></td><td class="score">—</td></tr>
+          <tr data-category="twos"><td>Twos</td><td class="potential"></td><td class="score">—</td></tr>
+          <tr data-category="threes"><td>Threes</td><td class="potential"></td><td class="score">—</td></tr>
+          <tr data-category="fours"><td>Fours</td><td class="potential"></td><td class="score">—</td></tr>
+          <tr data-category="fives"><td>Fives</td><td class="potential"></td><td class="score">—</td></tr>
+          <tr data-category="sixes"><td>Sixes</td><td class="potential"></td><td class="score">—</td></tr>
+          <tr class="subtotal-row">
+            <td>Upper Subtotal</td>
+            <td></td>
+            <td class="score" id="upper-subtotal">0</td>
+          </tr>
+          <tr class="bonus-row">
+            <td>Bonus <span id="bonus-progress">(0/63)</span></td>
+            <td></td>
+            <td class="score" id="upper-bonus">0</td>
+          </tr>
+        </tbody>
+        <tbody id="lower-section">
+          <tr class="section-header"><td colspan="3">Lower Section</td></tr>
+          <tr data-category="threeOfAKind"><td>Three of a Kind</td><td class="potential"></td><td class="score">—</td></tr>
+          <tr data-category="fourOfAKind"><td>Four of a Kind</td><td class="potential"></td><td class="score">—</td></tr>
+          <tr data-category="fullHouse"><td>Full House</td><td class="potential"></td><td class="score">—</td></tr>
+          <tr data-category="smallStraight"><td>Small Straight</td><td class="potential"></td><td class="score">—</td></tr>
+          <tr data-category="largeStraight"><td>Large Straight</td><td class="potential"></td><td class="score">—</td></tr>
+          <tr data-category="yahtzee"><td>Yahtzee</td><td class="potential"></td><td class="score">—</td></tr>
+          <tr data-category="chance"><td>Chance</td><td class="potential"></td><td class="score">—</td></tr>
+          <tr class="bonus-row">
+            <td>Yahtzee Bonus</td>
+            <td></td>
+            <td class="score" id="yahtzee-bonus">0</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td>Grand Total</td>
+            <td></td>
+            <td class="score" id="grand-total">0</td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

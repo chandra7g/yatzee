@@ -1,0 +1,245 @@
+/* style.css - polished but manageable Yahtzee theme */
+
+/* -------- custom properties for theme -------- */
+:root {
+  --felt: #1a5c2a;
+  --felt-dark: #0f3d1a;
+  --felt-light: #2a7a3e;
+  --wood: #5c3a1e;
+  --wood-light: #7a5030;
+  --wood-dark: #3d2510;
+  --dice-face: #f5f0e8;
+  --dice-shadow: #b8a88a;
+  --dice-dot: #1a1a1a;
+  --accent: #d4a843;
+  --accent-dark: #a07820;
+  --text-light: #fdf6e3;
+  --text-dark: #2a2015;
+  --text-muted: #8a7a60;
+  --red: #c0392b;
+  --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+}
+
+/* ---------- reset ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: radial-gradient(ellipse at top, var(--felt-light) 0%, var(--felt) 60%, var(--felt-dark) 100%);
+  color: var(--text-dark);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); }
+
+.hidden { display: none !important; }
+
+/* ---------- layout ---------- */
+#app, #game-area {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* ---------- modals ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: var(--wood);
+  color: var(--text-light);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  width: 90%;
+  max-width: 500px;
+}
+.modal-content h1 { margin-bottom: 1rem; }
+
+/* setup form */
+.setup-form { display: flex; flex-direction: column; gap: 0.6rem; }
+.setup-form label { font-weight: 600; }
+.setup-form input {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--wood-light);
+  border-radius: 6px;
+  font-size: 1rem;
+  background: var(--text-light);
+  color: var(--text-dark);
+}
+#player-names-container { display: flex; flex-direction: column; gap: 0.4rem; }
+
+/* buttons */
+.btn {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.1s, background 0.2s;
+}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-primary {
+  background: var(--accent);
+  color: #111;
+}
+.btn-primary:hover:not(:disabled) { background: var(--accent-dark); }
+.btn-roll {
+  background: var(--felt-light);
+  color: #111;
+  font-size: 1.1rem;
+  border: 2px solid var(--wood-dark);
+}
+.btn-roll:hover:not(:disabled) { background: var(--felt); }
+
+/* ---------- player bar ---------- */
+#player-info-bar {
+  background: linear-gradient(135deg, var(--wood-dark), var(--wood));
+  color: var(--text-light);
+  padding: 0.8rem 1.2rem;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+#current-player-name { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+#turn-info { font-size: 0.9rem; opacity: 0.9; }
+#standings-bar {
+  display: flex;
+  gap: 0.6rem;
+}
+.standing-chip {
+  background: var(--felt-light);
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+/* ---------- dice ---------- */
+#dice-section { margin: 1rem 0; text-align: center; }
+#dice-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  perspective: 500px;
+}
+.die-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.hold-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  visibility: hidden;
+  text-align: center;
+}
+.die-wrapper.held .hold-label {
+  visibility: visible;
+}
+.die-wrapper.no-click { pointer-events: none; }
+.die {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(145deg, #fff, var(--dice-face));
+  border-radius: 12px;
+  padding: 8px;
+  border: 2px solid var(--dice-shadow);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+  user-select: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.die-face {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2px;
+}
+.die:hover:not(.disabled) { transform: translateY(-2px); }
+.die-wrapper.held .die {
+  background: linear-gradient(145deg, #fffde0, var(--dice-held-bg,#fff));
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(212,168,67,0.6);
+}
+.die.disabled { opacity: 0.5; cursor: default; }
+.die.blank { opacity: 0.4; }
+.die.rolling { animation: dieRoll 0.45s ease-out; }
+@keyframes dieRoll {
+  0% { transform: rotateX(0) rotateY(0) scale(0.9); }
+  100% { transform: rotateX(720deg) rotateY(360deg) scale(1); }
+}
+.dot { width: 100%; height: 100%; border-radius: 50%; background: var(--dice-dot); }
+
+/* ---------- roll area ---------- */
+#roll-area { margin-top: 0.8rem; }
+#rolls-left { display: inline-block; margin-left: 1rem; font-weight: 600; color: var(--text-light); }
+
+/* ---------- scorecard ---------- */
+#scorecard-section { overflow-x: auto; }
+#scorecard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: rgba(255,255,255,0.9);
+  border-radius: 8px;
+  overflow: hidden;
+}
+#scorecard-table th,
+#scorecard-table td { padding: 8px 12px; text-align: left; }
+#scorecard-table th { background: var(--wood-dark); color: var(--text-light); }
+#scorecard-table tr.section-header td {
+  background: var(--wood);
+  color: var(--text-light);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}
+#scorecard-table tr.filled td.score { font-weight: 700; }
+#scorecard-table tr.unavailable { opacity: 0.5; }
+#scorecard-table tr[data-category]:not(.filled):not(.unavailable) { cursor: pointer; }
+#scorecard-table tr[data-category]:not(.filled):not(.unavailable):hover {
+  background: rgba(212,168,67,0.15);
+}
+.potential { color: var(--accent); font-weight: 600; }
+.score { text-align: right; }
+.col-potential, .col-score { text-align: right; }
+.subtotal-row td, .bonus-row td, .total-row td { font-weight: 700; }
+.bonus-row td { color: var(--accent-dark); }
+.total-row td { background: var(--wood-dark); color: var(--text-light); }
+
+/* ---------- final scores ---------- */
+.final-player {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--felt-light);
+  border-radius: 6px;
+  margin: 4px 0;
+}
+.final-player.winner { background: var(--accent); color: #111; font-weight: 700; }
+
+/* ---------- utility --------- */
+@media (max-width: 600px) {
+  #player-info-bar { flex-direction: column; align-items: flex-start; }
+}
